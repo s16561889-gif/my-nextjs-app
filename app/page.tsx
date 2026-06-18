@@ -14,7 +14,7 @@ interface Note {
 }
 
 export default function HomePage() {
-  // 1. 控制目前顯示哪個分頁的狀態：'home' | 'about' | 'projects'
+  // 控制目前顯示哪個分頁的狀態：'home' | 'about' | 'projects'
   const [activeTab, setActiveTab] = useState<'home' | 'about' | 'projects'>('home')
 
   // AI 聊天相關狀態
@@ -26,10 +26,10 @@ export default function HomePage() {
   const [apiMessage, setApiMessage] = useState('')
   const bottomRef = useRef<HTMLDivElement>(null)
 
-  // 2. 台灣即時時間狀態
+  // 台灣即時時間狀態
   const [time, setTime] = useState('')
 
-  // 3. 筆記本相關狀態
+  // 筆記本相關狀態
   const [notes, setNotes] = useState<Note[]>([])
   const [noteInput, setNoteInput] = useState('')
 
@@ -155,9 +155,7 @@ export default function HomePage() {
         <span>[ TAIWAN STANDARD TIME: {time || 'CLOCK_INITIALIZING...'} ]</span>
       </div>
 
-      {/* 條件渲染：根據 activeTab 決定顯示什麼畫面 */}
-      
-      {/* 1. HOME 主頁 (AI聊天室 + 筆記本) */}
+      {/* 1. HOME 主頁 */}
       {activeTab === 'home' && (
         <>
           {/* HERO */}
@@ -177,7 +175,7 @@ export default function HomePage() {
             <div style={{ display: 'flex', gap: '40px', marginTop: '30px', flexWrap: 'wrap' }}>
               {[
                 { label: 'MODEL', value: 'Gemini 2.5' },
-                { label: 'FRAMEWORK', value: 'Next.js 15+' },
+                { label: 'FRAMEWORK', value: 'Next.js 16' },
                 { label: 'DEPLOY', value: 'Vercel' },
                 { label: 'STATUS', value: '● ONLINE' },
               ].map(stat => (
@@ -186,6 +184,29 @@ export default function HomePage() {
                   <div style={{ fontSize: '15px', color: stat.label === 'STATUS' ? '#22c55e' : '#00d4ff', fontWeight: 'bold' }}>{stat.value}</div>
                 </div>
               ))}
+            </div>
+
+            {/* API PING BUTTON */}
+            <div style={{ marginTop: '32px', display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+              <button
+                onClick={fetchAPI}
+                style={{
+                  padding: '10px 24px',
+                  background: 'transparent',
+                  border: '1px solid #1e3a5f',
+                  borderRadius: '6px',
+                  color: '#64748b',
+                  cursor: 'pointer',
+                  fontSize: '13px',
+                  letterSpacing: '0.1em',
+                  transition: 'all 0.2s',
+                }}
+              >
+                $ ping /api/hello
+              </button>
+              {apiMessage && (
+                <span style={{ color: '#22c55e', fontSize: '13px' }}>{'>'} {apiMessage}</span>
+              )}
             </div>
           </section>
 
@@ -198,7 +219,7 @@ export default function HomePage() {
                 <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ff5f57', display: 'inline-block' }} />
                 <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#febc2e', display: 'inline-block' }} />
                 <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#28c840', display: 'inline-block' }} />
-                <span style={{ marginLeft: '12px', fontSize: '13px', color: '#475569' }}>gemini-terminal — AI Chat</span>
+                <span style={{ marginLeft: '12px', fontSize: '13px', color: '#475569' }}>gemini-terminal — AI Chat Interface</span>
               </div>
 
               <div style={{ background: '#050810', padding: '24px', minHeight: '320px', maxHeight: '380px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '16px', flex: 1 }}>
@@ -282,8 +303,7 @@ export default function HomePage() {
             <h2 style={{ fontSize: '28px', color: '#ffffff', marginBottom: '24px', fontFamily: 'system-ui, sans-serif', borderBottom: '1px solid #1e3a5f', paddingBottom: '12px' }}>關於開發者 / About Me</h2>
             
             <div style={{ display: 'flex', gap: '30px', alignItems: 'center', marginBottom: '30px', flexWrap: 'wrap' }}>
-              {/* 自動化概念的科技感裝飾圖圈 */}
-              <div style={{ width: '100px', height: '100px', borderRadius: '50%', background: 'linear-gradient(135deg, #00d4ff, #7c3aed)', display: 'flex', alignItems: 'center', justifyContents: 'center', justifyContent: 'center', fontSize: '40px', boxShadow: '0 0 20px rgba(0,212,255,0.3)' }}>🤖</div>
+              <div style={{ width: '100px', height: '100px', borderRadius: '50%', background: 'linear-gradient(135deg, #00d4ff, #7c3aed)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '40px', boxShadow: '0 0 20px rgba(0,212,255,0.3)' }}>🤖</div>
               <div style={{ fontFamily: 'system-ui, sans-serif' }}>
                 <div style={{ fontSize: '22px', fontWeight: 'bold', color: '#ffffff' }}>沈益吉 (Yi-Ji, Shen)</div>
                 <div style={{ color: '#00d4ff', fontSize: '14px', marginTop: '4px' }}>國立勤益科技大學 | 智慧自動化工程系 (四智四甲)</div>
@@ -315,7 +335,7 @@ export default function HomePage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
             
             {/* 卡片 1 */}
-            <div style={{ border: '1px solid #1e3a5f', borderRadius: '12px', background: '#050810', padding: '24px', display: 'flex', flexDirection: 'column', justifyBetween: 'space-between' }}>
+            <div style={{ border: '1px solid #1e3a5f', borderRadius: '12px', background: '#050810', padding: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                   <span style={{ color: '#00d4ff', fontSize: '12px', fontWeight: 'bold' }}>[ NEXT.JS + AI ]</span>
@@ -330,7 +350,7 @@ export default function HomePage() {
             </div>
 
             {/* 卡片 2 */}
-            <div style={{ border: '1px solid #1e3a5f', borderRadius: '12px', background: '#050810', padding: '24px', display: 'flex', flexDirection: 'column', justifyBetween: 'space-between' }}>
+            <div style={{ border: '1px solid #1e3a5f', borderRadius: '12px', background: '#050810', padding: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                   <span style={{ color: '#7c3aed', fontSize: '12px', fontWeight: 'bold' }}>[ HARDWARE CONTROL ]</span>
@@ -359,8 +379,8 @@ export default function HomePage() {
         color: '#334155',
         marginTop: 'auto'
       }}>
-        <span>© 2026 沈益吉 (3B161051)</span>
-        <span style={{ color: '#1e3a5f' }}>國立勤益科技大學 智慧自動化工程系 期末作業</span>
+        <span>© 2026 {process.env.NEXT_PUBLIC_AUTHOR || '沈益吉'}</span>
+        <span style={{ color: '#1e3a5f' }}>Built with Next.js + Gemini API</span>
       </footer>
 
       <style>{`
